@@ -1,0 +1,79 @@
+.admin-sessions {
+  max-width: 1100px;
+}
+
+.page-title {
+  color: white;
+  margin-bottom: 25px;
+  font-size: 28px;
+}
+
+.add-form {
+  background-color: #1e2937;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 40px;
+  border: 1px solid #334155;
+}
+
+.add-form h3 {
+  margin-top: 0;
+  color: #60a5fa;
+}
+
+.add-form form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+.add-form select,
+.add-form input {
+  padding: 12px 16px;
+  background-color: #334155;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+}
+
+.add-form button {
+  padding: 12px 24px;
+  background-color: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  grid-column: span 2;
+  margin-top: 10px;
+}
+
+.add-form button:hover {
+  background-color: #16a34a;
+}
+
+/* Список сеансов */
+.sessions-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+.session-card {
+  background-color: #1e2937;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #334155;
+}
+
+.session-card h4 {
+  margin: 0 0 15px 0;
+  color: white;
+  font-size: 20px;
+}
+
+.session-card p {
+  margin: 8px 0;
+  color: #94a3b8;
+}

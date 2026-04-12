@@ -1,0 +1,86 @@
+.admin-films {
+  max-width: 1100px;
+}
+
+.page-title {
+  color: white;
+  margin-bottom: 25px;
+  font-size: 28px;
+}
+
+.add-form {
+  background-color: #1e2937;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 40px;
+  border: 1px solid #334155;
+}
+
+.add-form h3 {
+  margin-top: 0;
+  color: #60a5fa;
+}
+
+.add-form form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+.add-form input {
+  padding: 12px 16px;
+  background-color: #334155;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+}
+
+.add-form button {
+  padding: 12px 24px;
+  background-color: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  grid-column: span 2;
+}
+
+.add-form button:hover {
+  background-color: #16a34a;
+}
+
+/* Список фильмов */
+.films-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.film-card {
+  background-color: #1e2937;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #334155;
+}
+
+.film-poster {
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
+}
+
+.film-info {
+  padding: 18px;
+}
+
+.film-info h4 {
+  margin: 0 0 12px 0;
+  color: white;
+}
+
+.film-info p {
+  margin: 6px 0;
+  color: #94a3b8;
+}
