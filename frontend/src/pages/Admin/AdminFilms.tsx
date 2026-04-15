@@ -30,18 +30,40 @@ function AdminFilms() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleAddFilm = (e) => {
+  const handleAddFilm = async (e) => {
     e.preventDefault();
-    if (!form.name || !form.duration) return;
 
-    const newFilm = {
-      id: Date.now(),
-      ...form
-    };
+    if (!form.name || !form.duration) {
+      alert('Название и длительность обязательны');
+      return;
+    }
 
-    setFilms([...films, newFilm]);
-    setForm({ name: '', duration: '', ageRestriction: '', poster: '' });
-    alert('Фильм добавлен!');
+    try {
+      const res = await fetch('http://localhost:5000/api/films', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: form.name,
+          duration: form.duration,
+          ageRestriction: form.ageRestriction,
+          poster: form.poster
+        })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert('Фильм успешно добавлен на сервер!');
+        // Можно добавить обновление списка фильмов с сервера
+      } else {
+        alert(data.message || 'Ошибка при добавлении фильма');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Ошибка соединения с сервером');
+    }
   };
 
   return (
