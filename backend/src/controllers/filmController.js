@@ -1,50 +1,50 @@
-// Массив для хранения фильмов (пока без базы данных)
-let films = [
-  {
-    id: 1,
-    name: "Дюна: Часть вторая",
-    duration: "166 мин",
-    ageRestriction: "16+",
-    poster: "https://via.placeholder.com/300x450?text=ДЮНА"
-  }
-];
+const pool = require('../config/db');
 
 // Получить все фильмы
-const getAllFilms = (req, res) => {
-  res.json({
-    success: true,
-    count: films.length,
-    data: films
-  });
-};
+const getAllFilms = async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT id, name, duration, "ageRestriction", description, poster 
+      FROM "Film" 
+      ORDER BY name
+    `);
+    
+    console.log(`✅ Загружено фильмов: ${result.rows.length}`);
 
-// Создать новый фильм
-const createFilm = (req, res) => {
-  const { name, duration, ageRestriction, poster } = req.body;
-
-  // Простая валидация
-  if (!name || !duration) {
-    return res.status(400).json({
-      success: false,
-      message: "Название и длительность фильма обязательны"
+    res.json({
+      success: true,
+      count: result.rows.length,
+      data: result.rows
+    });
+  } catch (err) {
+    console.error('❌ Ошибка getAllFilms:', err.message);
+    res.status(500).json({ 
+      success: false, 
+      message: err.message 
     });
   }
+};
 
-  const newFilm = {
-    id: Date.now(),
-    name,
-    duration,
-    ageRestriction: ageRestriction || "12+",
-    poster: poster || `https://via.placeholder.com/300x450?text=${name.substring(0, 10)}`
-  };
+// Создать фильм
+const createFilm = async (req, res) => {
+  const { name, duration, ageRestriction, description, poster } = req.body;
 
-  films.push(newFilm);
+  try {
+    const result = await pool.query(`
+      INSERT INTO "Film" (name, duration, "ageRestriction", description, poster)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *
+    `, [name, duration, ageRestriction, description, poster]);
 
-  res.status(201).json({
-    success: true,
-    message: "Фильм успешно создан",
-    data: newFilm
-  });
+    res.status(201).json({
+      success: true,
+      message: "Фильм успешно создан",
+      data: result.rows[0]
+    });
+  } catch (err) {
+    console.error('❌ Ошибка createFilm:', err.message);
+    res.status(500).json({ success: false, message: err.message });
+  }
 };
 
 module.exports = {

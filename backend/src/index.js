@@ -6,8 +6,9 @@ const morgan = require('morgan');
 
 dotenv.config();
 
-const app = express();
 const pool = require('./config/db');
+
+const app = express();
 
 // Middleware
 app.use(helmet());
@@ -18,18 +19,28 @@ app.use(cors({
 app.use(express.json());
 app.use(morgan('dev'));
 
-// Тестовый маршрут + проверка БД
+const filmRoutes = require('./routes/filmRoutes');
+app.use('/api/films', filmRoutes);
+
+const sessionRoutes = require('./routes/sessionRoutes');
+app.use('/api/sessions', sessionRoutes);
+
+const hallRoutes = require('./routes/hallRoutes');
+app.use('/api/halls', hallRoutes);
+
+// Тест подключения к базе данных
 app.get('/', async (req, res) => {
   try {
-    const result = await pool.query('SELECT NOW()');
+    const result = await pool.query('SELECT NOW() as current_time');
     res.json({
-      message: 'Backend работает!',
-      database: 'PostgreSQL подключена',
-      time: result.rows[0].now
+      message: 'Backend успешно работает!',
+      database: 'PostgreSQL подключена успешно',
+      time: result.rows[0].current_time
     });
   } catch (err) {
+    console.error(err);
     res.status(500).json({
-      message: 'Backend работает, но БД не подключена',
+      message: 'Backend работает, но есть проблема с БД',
       error: err.message
     });
   }
