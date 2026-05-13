@@ -28,6 +28,9 @@ app.use('/api/sessions', sessionRoutes);
 const hallRoutes = require('./routes/hallRoutes');
 app.use('/api/halls', hallRoutes);
 
+const reservationRoutes = require('./routes/reservationRoutes');
+app.use('/api/reservations', reservationRoutes);
+
 // Тест подключения к базе данных
 app.get('/', async (req, res) => {
   try {

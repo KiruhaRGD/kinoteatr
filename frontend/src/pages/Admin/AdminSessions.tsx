@@ -45,7 +45,39 @@ function AdminSessions() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleCreateSession = async (e) => { /* твой текущий код */ };
+    const handleCreateSession = async (e) => {
+    e.preventDefault();
+
+    if (!form.filmId || !form.hallId || !form.date || !form.timeStart) {
+      return alert('Заполните все поля!');
+    }
+
+    try {
+      const res = await fetch('http://localhost:5000/api/sessions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          filmId: parseInt(form.filmId),
+          hallId: parseInt(form.hallId),
+          date: form.date,
+          timeStart: form.timeStart
+        })
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        alert('Сеанс успешно создан!');
+        setForm({ filmId: '', hallId: '', date: '', timeStart: '' });
+        fetchData();           // обновляем список
+      } else {
+        alert(data.message || 'Ошибка создания сеанса');
+      }
+    } catch (err) {
+      alert('Ошибка соединения с сервером');
+      console.error(err);
+    }
+  };
 
   const deleteSession = async (sessionId, filmName) => {
     if (!window.confirm(`Удалить сеанс "${filmName}"?`)) return;

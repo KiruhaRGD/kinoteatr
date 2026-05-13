@@ -2,22 +2,42 @@ const pool = require('../config/db');
 
 // Получить все сеансы
 const getAllSessions = async (req, res) => {
-  try {
-    const result = await pool.query(`
-      SELECT 
-        s.id,
-        s."timeStart",
-        s.date,
-        f.name as "filmName",
-        h.number as "hallNumber",
-        s."film_id" as "filmId",
-        s."hall_id" as "hallId"
-      FROM "Showing" s
-      JOIN "Film" f ON s."film_id" = f.id
-      JOIN "Hall" h ON s."hall_id" = h.id
-      ORDER BY s.date DESC, s."timeStart" DESC
-    `);
+  const { date, filmId } = req.query;
 
+  let query = `
+    SELECT 
+      s.id,
+      s.date,
+      s."timeStart",
+      f.name as "filmName",
+      h.number as "hallNumber",
+      s."film_id" as "filmId",
+      s."hall_id" as "hallId"
+    FROM "Showing" s
+    JOIN "Film" f ON s."film_id" = f.id
+    JOIN "Hall" h ON s."hall_id" = h.id
+  `;
+
+  const params = [];
+  let whereAdded = false;
+
+  if (date) {
+    query += whereAdded ? " AND" : " WHERE";
+    query += ` s.date = $${params.length + 1}`;
+    params.push(date);
+    whereAdded = true;
+  }
+
+  if (filmId) {
+    query += whereAdded ? " AND" : " WHERE";
+    query += ` s."film_id" = $${params.length + 1}`;
+    params.push(filmId);
+  }
+
+  query += ` ORDER BY s.date, s."timeStart"`;
+
+  try {
+    const result = await pool.query(query, params);
     res.json({
       success: true,
       count: result.rows.length,
@@ -29,7 +49,6 @@ const getAllSessions = async (req, res) => {
   }
 };
 
-// Создать новый сеанс
 const createSession = async (req, res) => {
   const { filmId, hallId, date, timeStart } = req.body;
 
@@ -81,8 +100,70 @@ const deleteSession = async (req, res) => {
   }
 };
 
+const getSessionSeats = async (req, res) => {
+  const { sessionId } = req.params;
+
+  try {
+    // 1. Информация о сеансе
+    const sessionResult = await pool.query(`
+      SELECT 
+        s.id,
+        s.date,
+        s."timeStart",
+        f.name as "filmName",
+        h.id as "hallId",
+        h.number as "hallNumber",
+        h.rows,
+        h.seats as "seatsPerRow"
+      FROM "Showing" s
+      JOIN "Film" f ON s."film_id" = f.id
+      JOIN "Hall" h ON s."hall_id" = h.id
+      WHERE s.id = $1
+    `, [sessionId]);
+
+    if (sessionResult.rows.length === 0) {
+      return res.status(404).json({ success: false, message: "Сеанс не найден" });
+    }
+
+    const session = sessionResult.rows[0];
+
+    // 2. Получаем все занятые места для этого сеанса
+    const reservedResult = await pool.query(`
+      SELECT seat_id 
+      FROM "Reservation" 
+      WHERE "showing_id" = $1
+    `, [sessionId]);
+
+    const reservedSeats = new Set(reservedResult.rows.map(r => r.seat_id));
+
+    // 3. Генерируем все места зала
+    const seats = [];
+    for (let row = 1; row <= session.rows; row++) {
+      for (let num = 1; num <= session.seatsPerRow; num++) {
+        const seatId = `${row}-${num}`;
+        seats.push({
+          id: seatId,
+          row: row,
+          number: num,
+          status: reservedSeats.has(seatId) ? 'taken' : 'available'
+        });
+      }
+    }
+
+    res.json({
+      success: true,
+      session: session,
+      seats: seats
+    });
+  } catch (err) {
+    console.error('Ошибка getSessionSeats:', err.message);
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
 module.exports = {
   getAllSessions,
   createSession,
-  deleteSession
+  deleteSession,
+  getSessionSeats
 };

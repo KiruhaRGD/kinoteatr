@@ -1,0 +1,184 @@
+/* ==================== Hall.css ==================== */
+
+.hall-page {
+  background: #0f172a;
+  min-height: 100vh;
+  color: white;
+  padding: 20px;
+}
+
+.back-btn {
+  padding: 10px 20px;
+  background: #334155;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.back-btn:hover {
+  background: #475569;
+}
+
+.hall-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.hall-header h1 {
+  margin: 0 0 8px 0;
+  font-size: 32px;
+  color: #e2e8f0;
+}
+
+.hall-header p {
+  color: #94a3b8;
+  font-size: 18px;
+}
+
+/* Экран */
+.screen {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.screen div {
+  display: inline-block;
+  background: #1e2937;
+  color: #cbd5e1;
+  padding: 14px 100px;
+  border-radius: 8px;
+  font-size: 19px;
+  letter-spacing: 8px;
+  border: 3px solid #475569;
+  font-weight: 500;
+}
+
+/* Схема зала */
+.seats-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.seat-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 24px;
+}
+
+.row-label {
+  width: 70px;
+  text-align: right;
+  font-weight: bold;
+  color: #94a3b8;
+  font-size: 17px;
+}
+
+.seats {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.seat {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid #475569;
+  user-select: none;
+}
+
+.seat.available {
+  background-color: #22c55e;
+  color: #0f172a;
+}
+
+.seat.available:hover {
+  background-color: #16a34a;
+  transform: scale(1.12);
+}
+
+.seat.taken {
+  background-color: #64748b;
+  color: #cbd5e1;
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.seat.selected {
+  background-color: #eab308;
+  color: #0f172a;
+  border-color: #facc15;
+  transform: scale(1.1);
+}
+
+/* Панель бронирования */
+.booking-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1e2937;
+  padding: 16px 32px;
+  border-radius: 16px;
+  border: 1px solid #60a5fa;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  z-index: 100;
+}
+
+.booking-bar strong {
+  color: #60a5fa;
+  font-size: 18px;
+}
+
+.confirm-btn {
+  padding: 12px 28px;
+  background: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.confirm-btn:hover {
+  background: #16a34a;
+}
+
+/* Легенда */
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 60px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #94a3b8;
+  font-size: 16px;
+}
+
+.legend-item .seat {
+  width: 32px;
+  height: 32px;
+  cursor: default;
+  transform: none;
+}

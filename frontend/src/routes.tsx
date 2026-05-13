@@ -3,7 +3,7 @@ import { createBrowserRouter } from 'react-router';
 // Импорт страниц
 import Login from './pages/Login';
 import CashierMenu from './pages/Cashier/CashierMenu';
-import Hall from './pages/Hall';
+import Hall from './pages/Cashier/Hall';
 
 import AdminMenu from './pages/Admin/AdminMenu';
 import AdminStat from './pages/Admin/AdminStat';
@@ -24,9 +24,9 @@ export const router = createBrowserRouter([
     path: '/CashierMenu',
     element: <CashierMenu />,
   },
-  {
-    path: '/cashier/hall/:showingId',
-    element: <Hall />,
+  { 
+    path: '/cashier/hall/:sessionId', 
+    element: <Hall /> 
   },
 
 
