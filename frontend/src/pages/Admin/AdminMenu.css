@@ -1,3 +1,6 @@
+body{
+  background-color: #0f172a;
+}
 .admin-container {
   display: flex;
   min-height: 100vh;
@@ -64,7 +67,6 @@
   width: 24px;
 }
 
-/* Кнопка выхода */
 .admin-logout {
   padding: 20px 24px;
   border-top: 2px solid #334155;
@@ -87,7 +89,6 @@
   background-color: #dc2626;
 }
 
-/* Основная часть */
 .admin-content {
   flex: 1;
   display: flex;
@@ -107,7 +108,6 @@
   margin: 0;
   font-size: 28px;
 }
-
 
 .admin-page-content {
   padding: 30px;

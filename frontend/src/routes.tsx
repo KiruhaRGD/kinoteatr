@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router';
 
 // Импорт страниц
 import Login from './pages/Login';
-import CashierMenu from './pages/CashierMenu';
+import CashierMenu from './pages/Cashier/CashierMenu';
 import Hall from './pages/Hall';
 
 import AdminMenu from './pages/Admin/AdminMenu';

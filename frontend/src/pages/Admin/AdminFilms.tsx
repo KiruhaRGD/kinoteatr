@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import '../admin/AdminFilms.css';
+import '../Admin/AdminFilms.css';
 
 function AdminFilms() {
   const [films, setFilms] = useState([]);

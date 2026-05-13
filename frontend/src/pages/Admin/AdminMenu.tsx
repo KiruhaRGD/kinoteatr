@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate } from 'react-router';
-import '../admin/AdminMenu.css';
+import '../Admin/AdminMenu.css';
 
 function AdminMenu() {
   const location = useLocation();
@@ -21,7 +21,6 @@ const menuItems = [
 
   return (
     <div className="admin-container">
-      {/* Боковое меню */}
       <div className="admin-sidebar">
         <div className="admin-logo">
           <h2>КиноАдмин</h2>
@@ -47,7 +46,6 @@ const menuItems = [
         </div>
       </div>
 
-      {/* Основная область */}
       <div className="admin-content">
         <div className="admin-header">
           <h1>Админ панель</h1>

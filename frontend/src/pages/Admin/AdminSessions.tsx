@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import '../admin/AdminSessions.css';
+import '../Admin/AdminSessions.css';
 
 function AdminSessions() {
   const [sessions, setSessions] = useState([]);
@@ -11,36 +11,31 @@ function AdminSessions() {
     filmId: '',
     hallId: '',
     date: '',
-    time: ''
+    timeStart: ''
   });
 
-  // Загрузка данных
   const fetchData = async () => {
-  try {
-    setLoading(true);
-    
-    const [sessionsRes, filmsRes] = await Promise.all([
-      fetch('http://localhost:5000/api/sessions'),
-      fetch('http://localhost:5000/api/films')
-    ]);
+    try {
+      setLoading(true);
+      const [sRes, fRes, hRes] = await Promise.all([
+        fetch('http://localhost:5000/api/sessions'),
+        fetch('http://localhost:5000/api/films'),
+        fetch('http://localhost:5000/api/halls')
+      ]);
 
-    const sessionsData = await sessionsRes.json();
-    const filmsData = await filmsRes.json();
+      const sData = await sRes.json();
+      const fData = await fRes.json();
+      const hData = await hRes.json();
 
-    if (sessionsData.success) setSessions(sessionsData.data);
-    if (filmsData.success) {
-      setFilms(filmsData.data);
-      console.log('Фильмы загружены:', filmsData.data);   // для отладки
-    } else {
-      console.error('Ошибка загрузки фильмов:', filmsData.message);
+      if (sData.success) setSessions(sData.data);
+      if (fData.success) setFilms(fData.data);
+      if (hData.success) setHalls(hData.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
-
-  } catch (err) {
-    console.error('Ошибка fetchData:', err);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   useEffect(() => {
     fetchData();
@@ -50,64 +45,67 @@ function AdminSessions() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleAddSession = async (e) => {
-    e.preventDefault();
+  const handleCreateSession = async (e) => { /* твой текущий код */ };
 
-    if (!form.filmId || !form.hallId || !form.date || !form.time) {
-      alert('Заполните все поля!');
-      return;
-    }
+  const deleteSession = async (sessionId, filmName) => {
+    if (!window.confirm(`Удалить сеанс "${filmName}"?`)) return;
 
     try {
-      const res = await fetch('http://localhost:5000/api/sessions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
+      const res = await fetch(`http://localhost:5000/api/sessions/${sessionId}`, {
+        method: 'DELETE'
       });
 
-      const data = await res.json();
-
-      if (res.ok && data.success) {
-        alert('Сеанс успешно добавлен!');
-        setForm({ filmId: '', hallId: '', date: '', time: '' });
+      if (res.ok) {
+        alert('Сеанс удалён');
         fetchData();
       } else {
-        alert(data.message || 'Ошибка при добавлении сеанса');
+        alert('Ошибка удаления');
       }
     } catch (err) {
-      alert('Ошибка соединения с сервером');
+      alert('Ошибка соединения');
     }
   };
 
+  const formatDate = (dateStr) => {
+    if (!dateStr) return '—';
+
+    try {
+      const date = new Date(dateStr);
+      
+      if (isNaN(date.getTime())) return dateStr;
+
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+
+      return `${day}.${month}.${year}`;
+    } 
+    catch (e) {
+      return dateStr;
+    }
+  };
+  
   return (
     <div className="admin-sessions">
       <h2 className="page-title">Управление сеансами</h2>
 
       <div className="add-form">
         <h3>Добавить новый сеанс</h3>
-        <form onSubmit={handleAddSession}>
+        <form onSubmit={handleCreateSession}>
           <select name="filmId" value={form.filmId} onChange={handleInputChange} required>
             <option value="">Выберите фильм</option>
-            {films.map(film => (
-              <option key={film.id} value={film.id}>
-                {film.name}
-              </option>
-            ))}
+            {films.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
           </select>
 
           <select name="hallId" value={form.hallId} onChange={handleInputChange} required>
             <option value="">Выберите зал</option>
-            {halls.map(hall => (
-              <option key={hall.id} value={hall.id}>
-                {hall.name}
-              </option>
-            ))}
+            {halls.map(h => <option key={h.id} value={h.id}>Зал №{h.number}</option>)}
           </select>
 
           <input type="date" name="date" value={form.date} onChange={handleInputChange} required />
-          <input type="time" name="time" value={form.time} onChange={handleInputChange} required />
+          <input type="time" name="timeStart" value={form.timeStart} onChange={handleInputChange} required />
 
-          <button type="submit">Добавить сеанс</button>
+          <button type="submit">Создать сеанс</button>
         </form>
       </div>
 
@@ -117,9 +115,18 @@ function AdminSessions() {
         {sessions.map(session => (
           <div key={session.id} className="session-card">
             <h4>{session.filmName}</h4>
-            <p><strong>Зал:</strong> {session.hallName}</p>
-            <p><strong>Дата:</strong> {session.date}</p>
-            <p><strong>Время:</strong> {session.time}</p>
+            <div className="session-info">
+              <p><strong>Зал:</strong> №{session.hallNumber}</p>
+              <p><strong>Дата:</strong> {formatDate(session.date)}</p>
+              <p><strong>Время:</strong> {session.timeStart}</p>
+            </div>
+
+            <button 
+              className="delete-btn"
+              onClick={() => deleteSession(session.id, session.filmName)}
+            >
+              Удалить
+            </button>
           </div>
         ))}
       </div>

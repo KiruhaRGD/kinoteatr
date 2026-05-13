@@ -1,79 +1,93 @@
-.admin-sessions {
-  max-width: 1100px;
-}
+.admin-sessions { max-width: 1200px; margin: 0 auto; padding: 20px; }
 
-.page-title {
-  color: white;
-  margin-bottom: 25px;
-  font-size: 28px;
-}
+.page-title { color: white; font-size: 32px; margin-bottom: 30px; }
 
 .add-form {
-  background-color: #1e2937;
-  padding: 25px;
-  border-radius: 12px;
+  background: #1e2937;
+  padding: 32px;
+  border-radius: 16px;
   margin-bottom: 40px;
   border: 1px solid #334155;
 }
 
-.add-form h3 {
-  margin-top: 0;
-  color: #60a5fa;
-}
+.add-form h3 { color: #60a5fa; margin-bottom: 24px; }
 
 .add-form form {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
 }
 
-.add-form select,
-.add-form input {
-  padding: 12px 16px;
-  background-color: #334155;
+.add-form select, .add-form input {
+  padding: 14px 16px;
+  background: #334155;
   border: 1px solid #475569;
-  border-radius: 8px;
+  border-radius: 10px;
   color: white;
-  font-size: 16px;
 }
 
 .add-form button {
-  padding: 12px 24px;
-  background-color: #22c55e;
+  grid-column: span 2;
+  padding: 16px;
+  background: #22c55e;
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: 10px;
   cursor: pointer;
-  grid-column: span 2;
-  margin-top: 10px;
 }
 
-.add-form button:hover {
-  background-color: #16a34a;
-}
-
-/* Список сеансов */
+/* Карточки сеансов */
 .sessions-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   gap: 20px;
 }
 
 .session-card {
-  background-color: #1e2937;
-  padding: 20px;
-  border-radius: 12px;
+  background: #1e2937;
+  padding: 24px;
+  border-radius: 16px;
   border: 1px solid #334155;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.session-card:hover {
+  transform: translateY(-6px);
+  border-color: #60a5fa;
 }
 
 .session-card h4 {
-  margin: 0 0 15px 0;
-  color: white;
-  font-size: 20px;
+  margin: 0 0 18px 0;
+  color: #e2e8f0;
+  font-size: 21px;
 }
 
-.session-card p {
-  margin: 8px 0;
+.session-info p {
+  margin: 10px 0;
   color: #94a3b8;
+}
+
+.session-info strong {
+  color: #cbd5e1;
+  display: inline-block;
+  width: 80px;
+}
+
+/* Кнопка удаления */
+.delete-btn {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
 }

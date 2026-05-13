@@ -1,4 +1,4 @@
-import '../admin/AdminStat.css';
+import '../Admin/AdminStat.css';
 
 function AdminStat() {
   return (

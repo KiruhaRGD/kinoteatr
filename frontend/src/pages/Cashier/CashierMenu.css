@@ -1,0 +1,114 @@
+.cashier-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #0f172a;
+  min-height: 100vh;
+  color: white;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 38px;
+  color: #60a5fa;
+  margin-bottom: 30px;
+}
+
+.mode-switch {
+  display: flex;
+  background: #1e2937;
+  border-radius: 12px;
+  padding: 6px;
+  width: fit-content;
+  margin: 0 auto 30px;
+}
+
+.mode-switch button {
+  padding: 12px 40px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.mode-switch button.active {
+  background: #3b82f6;
+  color: white;
+  font-weight: 600;
+}
+
+.filter-panel {
+  background: #1e2937;
+  padding: 20px;
+  border-radius: 16px;
+  text-align: center;
+  margin-bottom: 30px;
+  border: 1px solid #334155;
+}
+
+.filter-panel input, .filter-panel select {
+  padding: 14px 20px;
+  font-size: 17px;
+  background: #334155;
+  border: 1px solid #475569;
+  border-radius: 10px;
+  color: white;
+}
+
+/* Карточки сеансов */
+.sessions-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 24px;
+}
+
+.session-card {
+  background: #1e2937;
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid #334155;
+  transition: all 0.3s;
+}
+
+.session-card:hover {
+  transform: translateY(-6px);
+  border-color: #60a5fa;
+}
+
+.session-card h3 {
+  margin: 0 0 18px 0;
+  color: #e2e8f0;
+  font-size: 21px;
+}
+
+.session-info p {
+  margin: 10px 0;
+  color: #94a3b8;
+}
+
+.sell-btn {
+  width: 100%;
+  padding: 16px;
+  background: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.sell-btn:hover {
+  background: #16a34a;
+}
+
+.loading, .no-sessions {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: #94a3b8;
+  font-size: 18px;
+}
