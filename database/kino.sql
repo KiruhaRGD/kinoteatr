@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict yGEHyeogLQvpVN4oBce8TOgivneD9kii4BiiARt06jKOZHREYdVFBjRK24pFM0D
+\restrict 87k9UiAaNsmKqcrFflBgmbFOZtbtNAxf1AZO1s5lxjKIzlYb68xViCjyh96Gn3d
 
 -- Dumped from database version 18.1
 -- Dumped by pg_dump version 18.1
@@ -68,7 +68,7 @@ CREATE TABLE public."Film" (
     name character varying(255) NOT NULL,
     "ageRestriction" character varying(255) NOT NULL,
     duration character varying(255) NOT NULL,
-    description character varying(255) NOT NULL,
+    description text NOT NULL,
     poster text
 );
 
@@ -150,7 +150,9 @@ ALTER SEQUENCE public."GenresFilm_id_seq" OWNED BY public."GenresFilm".id;
 
 CREATE TABLE public."Hall" (
     id integer NOT NULL,
-    number bigint NOT NULL
+    number bigint NOT NULL,
+    rows bigint,
+    seats bigint
 );
 
 
@@ -507,6 +509,8 @@ COPY public."Cashier" (id, name, surname, patronymic) FROM stdin;
 
 COPY public."Film" (id, name, "ageRestriction", duration, description, poster) FROM stdin;
 1	Форсаж	18+	106	Коп под прикрытием внедряется в банду стритрейсеров и становится одним из них. Первая часть гоночной франшизы	https://upload.wikimedia.org/wikipedia/ru/thumb/3/3b/The_Fast_and_the_Furious.jpg/250px-The_Fast_and_the_Furious.jpg
+2	Двойной форсаж	12+	107	Брайан и Роман по заданию ФБР разоблачают крупного драгдилера. Стильный сиквел с крутыми тачками и Евой Мендес	https://avatars.mds.yandex.net/get-kinopoisk-image/6201401/a7de8b77-34a0-4b22-9574-acec6c689958/300x450
+3	Тройной форсаж: Токийский дрифт	12+	104	Сосланный в Токио американский школьник учится дрифту и противостоит якудза. Самая романтичная часть франшизы	https://avatars.mds.yandex.net/get-kinopoisk-image/4774061/93898f89-91a1-4084-a2c7-5e5deac4933a/300x450
 \.
 
 
@@ -530,8 +534,9 @@ COPY public."GenresFilm" (id, genre_id, film_id) FROM stdin;
 -- Data for Name: Hall; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Hall" (id, number) FROM stdin;
-1	1
+COPY public."Hall" (id, number, rows, seats) FROM stdin;
+10	2	10	10
+11	1	6	10
 \.
 
 
@@ -564,6 +569,10 @@ COPY public."Seat" (id, type_seat_id, row_id, number) FROM stdin;
 --
 
 COPY public."Showing" (id, "timeStart", date, hall_id, film_id) FROM stdin;
+1	18:00:00	2026-05-13	11	1
+3	23:00:00	2026-05-13	10	1
+4	20:00:00	2026-05-13	11	2
+5	15:00:00	2026-05-14	10	3
 \.
 
 
@@ -594,7 +603,7 @@ SELECT pg_catalog.setval('public."Cashier_id_seq"', 1, false);
 -- Name: Film_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Film_id_seq"', 1, true);
+SELECT pg_catalog.setval('public."Film_id_seq"', 3, true);
 
 
 --
@@ -608,14 +617,14 @@ SELECT pg_catalog.setval('public."GenresFilm_id_seq"', 1, false);
 -- Name: Hall_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Hall_id_seq"', 1, true);
+SELECT pg_catalog.setval('public."Hall_id_seq"', 11, true);
 
 
 --
 -- Name: Reservation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Reservation_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."Reservation_id_seq"', 2, true);
 
 
 --
@@ -636,7 +645,7 @@ SELECT pg_catalog.setval('public."Seat_id_seq"', 1, false);
 -- Name: Showing_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Showing_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."Showing_id_seq"', 5, true);
 
 
 --
@@ -789,14 +798,6 @@ ALTER TABLE ONLY public."Reservation"
 
 
 --
--- Name: Row Row_fk1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Row"
-    ADD CONSTRAINT "Row_fk1" FOREIGN KEY (hall_id) REFERENCES public."Hall"(id);
-
-
---
 -- Name: Seat Seat_fk1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -837,8 +838,16 @@ ALTER TABLE ONLY public."GenresFilm"
 
 
 --
+-- Name: Row row_hall_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Row"
+    ADD CONSTRAINT row_hall_fk FOREIGN KEY (hall_id) REFERENCES public."Hall"(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
-\unrestrict yGEHyeogLQvpVN4oBce8TOgivneD9kii4BiiARt06jKOZHREYdVFBjRK24pFM0D
+\unrestrict 87k9UiAaNsmKqcrFflBgmbFOZtbtNAxf1AZO1s5lxjKIzlYb68xViCjyh96Gn3d
 
