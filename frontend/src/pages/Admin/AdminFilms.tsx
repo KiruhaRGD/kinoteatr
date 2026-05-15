@@ -133,7 +133,6 @@ function AdminFilms() {
         </form>
       </div>
 
-      {/* Список фильмов */}
       <h3>Существующие фильмы ({films.length})</h3>
 
       {loading && <p>Загрузка фильмов...</p>}

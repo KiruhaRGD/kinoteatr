@@ -69,7 +69,7 @@ function AdminSessions() {
       if (res.ok && data.success) {
         alert('Сеанс успешно создан!');
         setForm({ filmId: '', hallId: '', date: '', timeStart: '' });
-        fetchData();           // обновляем список
+        fetchData();
       } else {
         alert(data.message || 'Ошибка создания сеанса');
       }

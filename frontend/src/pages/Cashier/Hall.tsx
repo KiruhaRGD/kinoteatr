@@ -28,9 +28,7 @@ function Hall() {
     if (seat.status === 'taken') return;
 
     setSelectedSeats(prev => 
-      prev.some(s => s.id === seat.id)
-        ? prev.filter(s => s.id !== seat.id)
-        : [...prev, seat]
+      prev.some(s => s.id === seat.id) ? prev.filter(s => s.id !== seat.id) : [...prev, seat]
     );
   };
 
@@ -57,9 +55,8 @@ function Hall() {
       const data = await res.json();
 
       if (res.ok && data.success) {
-        alert(`✅ Успешно забронировано ${selectedSeats.length} мест!`);
+        alert(` Успешно забронировано ${selectedSeats.length} мест!`);
         setSelectedSeats([]);
-        // Обновляем схему зала
         window.location.reload();
       } else {
         alert(data.message || 'Ошибка бронирования');
@@ -89,7 +86,7 @@ function Hall() {
           <div key={rowIndex} className="seat-row">
             <div className="row-label">Ряд {rowIndex + 1}</div>
             <div className="seats">
-              {Array.from({ length: session.seats || 20 }).map((_, seatIndex) => {
+              {Array.from({ length: session.seats || 15 }).map((_, seatIndex) => {
                 const seat = seats.find(s => 
                   s.row === rowIndex + 1 && s.number === seatIndex + 1
                 );
